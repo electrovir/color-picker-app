@@ -31,56 +31,70 @@ export function createColorStrings(color: Color) {
     ]);
 
     const colorCoords = {
+        Hex: [String(rgb.display({format: 'hex', collapse: false}))],
         RGB: [
-            String(Math.round(rgb.r * 255)).padStart(3, ' '),
-            String(Math.round(rgb.g * 255)).padStart(3, ' '),
-            String(Math.round(rgb.b * 255)).padStart(3, ' '),
+            Math.round(rgb.r * 255),
+            Math.round(rgb.g * 255),
+            Math.round(rgb.b * 255),
         ],
-        Hex: [String(color.display({format: 'hex', collapse: false}))],
         HSL: [
             /** Pad to 4 because `h` may be `'none'`. */
-            String(wrapNaN(Math.round(hsl.h))).padStart(4, ' '),
-            String(Math.round(hsl.s)).padStart(3, ' '),
-            String(Math.round(hsl.l)).padStart(3, ' '),
+            wrapNaN(Math.round(hsl.h)),
+            Math.round(hsl.s),
+            Math.round(hsl.l),
         ],
         HSV: [
             /** Pad to 4 because `h` may be `'none'`. */
-            String(wrapNaN(Math.round(hsv.h))).padStart(4, ' '),
-            String(Math.round(hsv.s)).padStart(3, ' '),
-            String(Math.round(hsv.v)).padStart(3, ' '),
+            wrapNaN(Math.round(hsv.h)),
+            Math.round(hsv.s),
+            Math.round(hsv.v),
         ],
         HWB: [
             wrapNaN(Math.round(hwb.h)),
+            // 0 - 100
             Math.round(hwb.w),
+            // 0 - 100
             Math.round(hwb.b),
         ],
         LAB: [
+            // 0 - 100
             Math.round(lab.l),
+            // -125 - 125
             Math.round(lab.a),
+            // -125 - 125
             Math.round(lab.b),
         ],
         LCH: [
+            // 0 - 100
             Math.round(lch.l),
+            // 0 - ~230
             Math.round(lch.c),
+            // 0 - 360
             wrapNaN(Math.round(lch.h)),
         ],
         Oklab: [
-            wrapNaN(Math.round(oklab.l * 100), (value) => `${value}%`),
+            wrapNaN(round(oklab.l * 100, {digits: 1}), (value) => `${value}%`),
             wrapNaN(round(oklab.a, {digits: 2})),
             wrapNaN(round(oklab.b, {digits: 2})),
         ],
         Oklch: [
-            wrapNaN(Math.round(oklch.l * 100), (value) => `${value}%`),
+            wrapNaN(round(oklch.l * 100, {digits: 1}), (value) => `${value}%`),
             wrapNaN(round(oklch.c, {digits: 2})),
-            wrapNaN(Math.round(oklch.h)),
+            wrapNaN(round(oklch.h, {digits: 1})),
         ],
         Name: [colorNames.join(', ').padEnd(colorNameLength, ' ')],
     } satisfies Record<string, (string | number)[]>;
 
-    return mapObjectValues(colorCoords, (key, value) => value.join(' ')) satisfies Record<
-        string,
-        string
-    >;
+    return mapObjectValues(colorCoords, (key, values) => {
+        const paddedValues =
+            values.length <= 1
+                ? values
+                : values.map((value) => {
+                      return String(value).padStart(6, ' ');
+                  });
+
+        return paddedValues.join(' ');
+    }) satisfies Record<string, string>;
 }
 
 export function findMatchingColorNames(rgb: [r: number, g: number, b: number]): string[] {

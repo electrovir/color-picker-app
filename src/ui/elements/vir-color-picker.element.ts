@@ -1,14 +1,8 @@
 import {getObjectTypedEntries} from '@augment-vir/common';
 import {css, defineElement, defineElementEvent, html, listen} from 'element-vir';
-import {
-    Color,
-    createTable,
-    noNativeSpacing,
-    ViraInput,
-    ViraTable,
-    type ViraTableColumns,
-} from 'vira';
+import {Color, createTable, ViraInput, ViraTable, type ViraTableColumns} from 'vira';
 import {createColorStrings} from '../../data/color-formats.js';
+import {VirCellPre} from './common/vir-cell-pre.element.js';
 import {VirColorSwatch} from './vir-color-swatch.element.js';
 
 const overlayTableColumns = [
@@ -94,8 +88,6 @@ export const VirColorPicker = defineElement<{color: string}>()({
                         `,
                         td: css`
                             font-weight: bold;
-                            font-family: monospace;
-                            font-size: 16px;
                         `,
                     },
                     preventRowClicks: true,
@@ -110,12 +102,7 @@ export const VirColorPicker = defineElement<{color: string}>()({
                                     cells: {
                                         header: header + ':',
                                         value: html`
-                                            <pre
-                                                style=${css`
-                                                    ${noNativeSpacing};
-                                                `}
-                                                .textContent=${value}
-                                            ></pre>
+                                            <${VirCellPre}>${value}</${VirCellPre}>
                                         `,
                                     },
                                 };

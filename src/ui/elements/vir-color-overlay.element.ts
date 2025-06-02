@@ -1,7 +1,10 @@
-import {capitalizeFirstLetter, getObjectTypedEntries} from '@augment-vir/common';
+import {getObjectTypedEntries} from '@augment-vir/common';
+import Color from 'colorjs.io';
 import {css, defineElement, html, unsafeCSS} from 'element-vir';
 import {calculateContrast, ThemeVirContrastIndicator} from 'theme-vir';
 import {createTable, ViraTable, type ViraTableColumns} from 'vira';
+import {createColorStrings} from '../../data/color-formats.js';
+import {VirCellPre} from './common/vir-cell-pre.element.js';
 import {VirColorSwatch} from './vir-color-swatch.element.js';
 
 const overlayTableColumns = [
@@ -96,9 +99,11 @@ export const VirColorOverlay = defineElement<{
                     table: createTable(
                         overlayTableColumns,
                         getObjectTypedEntries({
-                            foreground: inputs.foregroundColor,
-                            background: inputs.backgroundColor,
-                            contrast: `${contrast.contrast} Lc`,
+                            'Foreground:': createColorStrings(new Color(inputs.foregroundColor))
+                                .Hex,
+                            'Background:': createColorStrings(new Color(inputs.backgroundColor))
+                                .Hex,
+                            'Contrast:': `${contrast.contrast} Lc`.padEnd(9, ' '),
                         }).map(
                             ([
                                 header,
@@ -106,8 +111,10 @@ export const VirColorOverlay = defineElement<{
                             ]) => {
                                 return {
                                     cells: {
-                                        header: capitalizeFirstLetter(header) + ':',
-                                        value,
+                                        header,
+                                        value: html`
+                                            <${VirCellPre}>${value}</${VirCellPre}>
+                                        `,
                                     },
                                 };
                             },
@@ -118,10 +125,12 @@ export const VirColorOverlay = defineElement<{
                     stylePassthrough: {
                         td: css`
                             padding: 4px 8px;
+                            font-weight: bold;
                         `,
                         th: css`
                             padding: 4px 8px;
                             text-align: end;
+                            font-weight: normal;
                         `,
                     },
                 })}></${ViraTable}>

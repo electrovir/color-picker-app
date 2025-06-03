@@ -111,6 +111,7 @@ export const VirColorPicker = defineElement<{color: string}>()({
                     ),
                 })}></${ViraTable}>
             </section>
+            <section></section>
         `;
     },
 });

@@ -4,6 +4,7 @@ import {css, defineElement, html, unsafeCSS} from 'element-vir';
 import {calculateContrast, ThemeVirContrastIndicator} from 'theme-vir';
 import {createTable, ViraTable, type ViraTableColumns} from 'vira';
 import {createColorStrings} from '../../data/color-formats.js';
+import {normalizeColor} from '../../data/verify-color.js';
 import {VirCellPre} from './common/vir-cell-pre.element.js';
 import {VirColorSwatch} from './vir-color-swatch.element.js';
 
@@ -65,8 +66,8 @@ export const VirColorOverlay = defineElement<{
     `,
     render({inputs}) {
         const contrast = calculateContrast({
-            background: inputs.backgroundColor,
-            foreground: inputs.foregroundColor,
+            background: normalizeColor(inputs.backgroundColor),
+            foreground: normalizeColor(inputs.foregroundColor),
         });
 
         return html`

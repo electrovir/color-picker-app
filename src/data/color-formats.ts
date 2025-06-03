@@ -4,15 +4,158 @@ import colorNames from 'color-name';
 import type Color from 'colorjs.io';
 import {colorNameLength} from './color-name-length.js';
 
-function wrapNaN(value: number, callbackIfNumber?: (value: number) => string | number) {
+function wrapNaN(value: number) {
     if (isNaN(value)) {
         return 'none';
-    } else if (callbackIfNumber) {
-        return callbackIfNumber(value);
     } else {
         return value;
     }
 }
+
+export type ColorCoords = Record<
+    string,
+    {
+        min: number;
+        max: number;
+        canBeNone?: boolean | undefined;
+    }
+>;
+
+export const colorFormats = {
+    srgb: {
+        RGB: {
+            r: {
+                min: 0,
+                max: 255,
+            },
+            g: {
+                min: 0,
+                max: 255,
+            },
+            b: {
+                min: 0,
+                max: 255,
+            },
+        },
+        HSL: {
+            h: {
+                min: 0,
+                max: 360,
+                canBeNone: true,
+            },
+            s: {
+                min: 0,
+                max: 100,
+            },
+            l: {
+                min: 0,
+                max: 100,
+            },
+        },
+        HSV: {
+            h: {
+                min: 0,
+                max: 360,
+                canBeNone: true,
+            },
+            s: {
+                min: 0,
+                max: 100,
+            },
+            v: {
+                min: 0,
+                max: 100,
+            },
+        },
+        HWB: {
+            h: {
+                min: 0,
+                max: 360,
+                canBeNone: true,
+            },
+            s: {
+                min: 0,
+                max: 100,
+            },
+            v: {
+                min: 0,
+                max: 100,
+            },
+        },
+    },
+    CIELAB: {
+        LAB: {
+            l: {
+                min: 0,
+                max: 100,
+                canBeNone: true,
+            },
+            a: {
+                min: -128,
+                max: 127,
+                canBeNone: true,
+            },
+            b: {
+                min: -128,
+                max: 127,
+                canBeNone: true,
+            },
+        },
+        LCH: {
+            l: {
+                min: 0,
+                max: 100,
+                canBeNone: true,
+            },
+            c: {
+                min: 0,
+                max: 230,
+                canBeNone: true,
+            },
+            h: {
+                min: 0,
+                max: 360,
+                canBeNone: true,
+            },
+        },
+    },
+    Oklab: {
+        Oklab: {
+            l: {
+                min: 0,
+                max: 1,
+                canBeNone: true,
+            },
+            a: {
+                min: -0.5,
+                max: 0.5,
+                canBeNone: true,
+            },
+            b: {
+                min: -0.5,
+                max: 0.5,
+                canBeNone: true,
+            },
+        },
+        Oklch: {
+            l: {
+                min: 0,
+                max: 1,
+                canBeNone: true,
+            },
+            c: {
+                min: 0,
+                max: 0.4,
+                canBeNone: true,
+            },
+            h: {
+                min: 0,
+                max: 360,
+                canBeNone: true,
+            },
+        },
+    },
+} satisfies {[ColorSpaceName in string]: {[CoordFormatName in string]: ColorCoords}};
 
 export function createColorStrings(color: Color) {
     const rgb = color.to('srgb');
@@ -73,12 +216,12 @@ export function createColorStrings(color: Color) {
             wrapNaN(Math.round(lch.h)),
         ],
         Oklab: [
-            wrapNaN(round(oklab.l * 100, {digits: 1}), (value) => `${value}%`),
+            wrapNaN(round(oklab.l, {digits: 2})),
             wrapNaN(round(oklab.a, {digits: 2})),
             wrapNaN(round(oklab.b, {digits: 2})),
         ],
         Oklch: [
-            wrapNaN(round(oklch.l * 100, {digits: 1}), (value) => `${value}%`),
+            wrapNaN(round(oklch.l, {digits: 2})),
             wrapNaN(round(oklch.c, {digits: 2})),
             wrapNaN(round(oklch.h, {digits: 1})),
         ],

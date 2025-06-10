@@ -1,22 +1,10 @@
 import {getObjectTypedEntries} from '@augment-vir/common';
-import Color from 'colorjs.io';
+import {Color} from '@electrovir/color';
 import {css, defineElement, html, unsafeCSS} from 'element-vir';
 import {calculateContrast, ThemeVirContrastIndicator} from 'theme-vir';
-import {createTable, ViraTable, type ViraTableColumns} from 'vira';
-import {createColorStrings} from '../../data/color-formats.js';
-import {normalizeColor} from '../../data/verify-color.js';
+import {createTable, ViraTable} from 'vira';
 import {VirCellPre} from './common/vir-cell-pre.element.js';
 import {VirColorSwatch} from './vir-color-swatch.element.js';
-
-const overlayTableColumns = [
-    {
-        key: 'header',
-        isHeader: true,
-    },
-    {
-        key: 'value',
-    },
-] as const satisfies ViraTableColumns;
 
 export const VirColorOverlay = defineElement<{
     foregroundColor: string;
@@ -66,8 +54,8 @@ export const VirColorOverlay = defineElement<{
     `,
     render({inputs}) {
         const contrast = calculateContrast({
-            background: normalizeColor(inputs.backgroundColor),
-            foreground: normalizeColor(inputs.foregroundColor),
+            background: inputs.backgroundColor,
+            foreground: inputs.foregroundColor,
         });
 
         return html`
@@ -98,22 +86,28 @@ export const VirColorOverlay = defineElement<{
             <div class="details">
                 <${ViraTable.assign({
                     table: createTable(
-                        overlayTableColumns,
+                        [
+                            {
+                                key: 'colorLayer',
+                                isHeader: true,
+                            },
+                            {
+                                key: 'colorValue',
+                            },
+                        ],
                         getObjectTypedEntries({
-                            'Foreground:': createColorStrings(new Color(inputs.foregroundColor))
-                                .Hex,
-                            'Background:': createColorStrings(new Color(inputs.backgroundColor))
-                                .Hex,
+                            'Foreground:': new Color(inputs.foregroundColor).toCss().hex,
+                            'Background:': new Color(inputs.backgroundColor).toCss().hex,
                             'Contrast:': `${contrast.contrast} Lc`.padEnd(9, ' '),
                         }).map(
                             ([
-                                header,
+                                colorLayer,
                                 value,
                             ]) => {
                                 return {
                                     cells: {
-                                        header,
-                                        value: html`
+                                        colorLayer,
+                                        colorValue: html`
                                             <${VirCellPre}>${value}</${VirCellPre}>
                                         `,
                                     },
@@ -121,8 +115,6 @@ export const VirColorOverlay = defineElement<{
                             },
                         ),
                     ),
-                    hideHeaderRow: true,
-                    preventRowClicks: true,
                     stylePassthrough: {
                         td: css`
                             padding: 4px 8px;

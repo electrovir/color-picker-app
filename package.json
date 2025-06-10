@@ -35,21 +35,22 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.23.2",
-        "@augment-vir/common": "^31.23.2",
+        "@augment-vir/assert": "^31.23.3",
+        "@augment-vir/common": "^31.23.3",
+        "@augment-vir/web": "^31.23.3",
+        "@electrovir/color": "^0.0.0",
         "color-name": "^2.0.0",
-        "colorjs.io": "^0.5.2",
-        "element-vir": "^25.13.1",
-        "theme-vir": "^25.13.1",
+        "element-vir": "^26.0.0",
+        "theme-vir": "^26.0.0",
         "type-fest": "^4.41.0",
-        "vira": "^25.13.1"
+        "vira": "^26.0.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.23.2",
+        "@augment-vir/test": "^31.23.3",
         "@eslint/eslintrc": "^3.3.1",
         "@eslint/js": "^9.28.0",
-        "@stylistic/eslint-plugin": "^4.4.0",
-        "@stylistic/eslint-plugin-ts": "^4.4.0",
+        "@stylistic/eslint-plugin": "^4.4.1",
+        "@stylistic/eslint-plugin-ts": "^4.4.1",
         "@types/color-name": "^2.0.0",
         "@typescript-eslint/eslint-plugin": "^8.33.1",
         "@web/dev-server-esbuild": "^1.0.4",
@@ -83,7 +84,7 @@
         "typedoc": "^0.28.5",
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.33.1",
-        "virmator": "^13.15.3",
+        "virmator": "^13.15.4",
         "vite": "^6.3.5"
     },
     "engines": {

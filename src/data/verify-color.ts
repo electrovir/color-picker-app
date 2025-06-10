@@ -1,4 +1,4 @@
-import Color from 'colorjs.io';
+import {Color} from '@electrovir/color';
 
 export function verifyColor(input: string | undefined): string | undefined {
     if (!input) {
@@ -6,12 +6,9 @@ export function verifyColor(input: string | undefined): string | undefined {
     }
 
     try {
-        return normalizeColor(input);
+        new Color(input);
+        return input;
     } catch {
         return undefined;
     }
-}
-
-export function normalizeColor(color: string): string {
-    return String(new Color(color).to('srgb').display({format: 'hex', collapse: false}));
 }

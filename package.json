@@ -27,12 +27,11 @@
         "lint": "virmator lint fix",
         "start": "virmator frontend",
         "test": "virmator test web",
-        "test:all": "npm run compile && concurrently --colors --kill-others-on-fail -c auto --names tests,spelling,format,deps,lint,build \"npm run test\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:deps\" \"npm run test:lint\" \"npm run build\"",
+        "test:all": "npm run compile && concurrently --colors --kill-others-on-fail -c auto --names spelling,format,deps,lint,build \"npm run test:spelling\" \"npm run test:format\" \"npm run test:deps\" \"npm run test:lint\" \"npm run build\"",
         "test:deps": "virmator deps check",
         "test:format": "virmator format check",
         "test:lint": "virmator lint",
-        "test:spelling": "virmator spellcheck",
-        "test:update": "npm test update"
+        "test:spelling": "virmator spellcheck"
     },
     "dependencies": {
         "@augment-vir/assert": "^31.23.3",

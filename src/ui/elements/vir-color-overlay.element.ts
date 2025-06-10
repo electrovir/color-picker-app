@@ -54,8 +54,8 @@ export const VirColorOverlay = defineElement<{
     `,
     render({inputs}) {
         const contrast = calculateContrast({
-            background: inputs.backgroundColor,
-            foreground: inputs.foregroundColor,
+            background: new Color(inputs.backgroundColor).toCss().rgb,
+            foreground: new Color(inputs.foregroundColor).toCss().rgb,
         });
 
         return html`

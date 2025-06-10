@@ -8,6 +8,7 @@ import {
 } from '@electrovir/color';
 import {css, defineElement, defineElementEvent, html, listen} from 'element-vir';
 import {ViraInput} from 'vira';
+import {monospaceFont} from '../styles/font.js';
 
 export const VirColorSlider = defineElement<{
     color: Color;
@@ -15,7 +16,23 @@ export const VirColorSlider = defineElement<{
     colorCoordinate: ColorCoordinateName;
 }>()({
     tagName: 'vir-color-slider',
-    styles: css``,
+    styles: css`
+        :host {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        ${ViraInput} {
+            width: 76px;
+        }
+
+        .coordinate {
+            font-family: ${monospaceFont};
+            font-size: 18px;
+            margin-top: -4px;
+        }
+    `,
     events: {
         valueChange: defineElementEvent<number>(),
     },
@@ -38,6 +55,7 @@ export const VirColorSlider = defineElement<{
         );
 
         return html`
+            <span class="coordinate">${inputs.colorCoordinate.toUpperCase()}</span>
             <input
                 type="range"
                 min=${coordinateDefinition.min}

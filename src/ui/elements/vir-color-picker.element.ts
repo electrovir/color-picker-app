@@ -9,7 +9,7 @@ import {
     type ColorUpdate,
 } from '@electrovir/color';
 import {css, defineElement, defineElementEvent, html, listen} from 'element-vir';
-import {createTable, ViraInput, ViraTable} from 'vira';
+import {createTable, noNativeSpacing, ViraInput, ViraTable} from 'vira';
 import {VirCellPre} from './common/vir-cell-pre.element.js';
 import {VirColorSlider} from './vir-color-slider.element.js';
 import {VirColorSwatch} from './vir-color-swatch.element.js';
@@ -20,6 +20,7 @@ export const VirColorPicker = defineElement<{color: string}>()({
         :host {
             display: flex;
             flex-direction: column;
+            gap: 16px;
         }
 
         .color-details {
@@ -47,6 +48,17 @@ export const VirColorPicker = defineElement<{color: string}>()({
         .color-format {
             display: flex;
             flex-direction: column;
+        }
+
+        .color-space {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 32px;
+            row-gap: 8px;
+        }
+
+        h3 {
+            ${noNativeSpacing};
         }
     `,
     events: {

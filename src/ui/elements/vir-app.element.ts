@@ -1,6 +1,7 @@
 import {css, defineElement, html, listen} from 'element-vir';
 import {ColorPickerLayer, loadColorFromCache, storeColorInCache} from '../../data/cache-store.js';
 import {verifyColor} from '../../data/verify-color.js';
+import {bodyFont} from '../styles/font.js';
 import {VirColorOverlay} from './vir-color-overlay.element.js';
 import {VirColorPicker} from './vir-color-picker.element.js';
 
@@ -8,7 +9,7 @@ export const VirApp = defineElement()({
     tagName: 'vir-app',
     styles: css`
         :host {
-            font-family: sans-serif;
+            font-family: ${bodyFont};
             display: flex;
             justify-content: center;
             padding: 0 16px;

@@ -4,6 +4,8 @@ import {verifyColor} from '../../data/verify-color.js';
 import {bodyFont} from '../styles/font.js';
 import {VirColorOverlay} from './vir-color-overlay.element.js';
 import {VirColorPicker} from './vir-color-picker.element.js';
+import {VirContrastLevels} from './vir-contrast-levels.element.js';
+import {VirTextWeights} from './vir-text-weights.element.js';
 
 export const VirApp = defineElement()({
     tagName: 'vir-app',
@@ -34,6 +36,10 @@ export const VirApp = defineElement()({
             justify-content: center;
             gap: 32px;
         }
+
+        .overlay {
+            align-items: center;
+        }
     `,
     state() {
         return {
@@ -49,6 +55,14 @@ export const VirApp = defineElement()({
                         foregroundColor: state.foregroundColor,
                         backgroundColor: state.backgroundColor,
                     })}></${VirColorOverlay}>
+                    <${VirTextWeights.assign({
+                        foregroundColor: state.foregroundColor,
+                        backgroundColor: state.backgroundColor,
+                    })}></${VirTextWeights}>
+                    <${VirContrastLevels.assign({
+                        foregroundColor: state.foregroundColor,
+                        backgroundColor: state.backgroundColor,
+                    })}></${VirContrastLevels}>
                 </section>
                 <section class="picker">
                     <div>

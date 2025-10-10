@@ -69,15 +69,13 @@ export const VirColorOverlay = defineElement<{
             foreground: new Color(inputs.foregroundColor).toCss().rgb,
         });
 
-        const {headerRow, rows} = defineTable(
+        const {rows} = defineTable(
             [
                 {
                     key: 'colorLayer',
-                    content: '',
                 },
                 {
                     key: 'colorValue',
-                    content: '',
                 },
             ],
             getObjectTypedEntries({
@@ -125,15 +123,6 @@ export const VirColorOverlay = defineElement<{
             </${VirColorSwatch}>
             <div class="details">
                 <table>
-                    <thead>
-                        <tr>
-                            ${headerRow.map((header) => {
-                                return html`
-                                    <th>${header.content}</th>
-                                `;
-                            })}
-                        </tr>
-                    </thead>
                     <tbody>
                         ${rows.map((row) => {
                             const cells = row.cells.map((cell, index) => {

@@ -137,15 +137,13 @@ export const VirColorPicker = defineElement<{color: string}>()({
             `;
         });
 
-        const {headerRow, rows} = defineTable(
+        const {rows} = defineTable(
             [
                 {
                     key: 'colorFormat',
-                    content: '',
                 },
                 {
                     key: 'formattedString',
-                    content: '',
                 },
             ],
             getObjectTypedEntries(colorStrings),
@@ -179,15 +177,6 @@ export const VirColorPicker = defineElement<{color: string}>()({
                     ></${ViraInput}>
                 </div>
                 <table>
-                    <thead>
-                        <tr>
-                            ${headerRow.map((header) => {
-                                return html`
-                                    <th>${header.content}</th>
-                                `;
-                            })}
-                        </tr>
-                    </thead>
                     <tbody>
                         ${rows.map((row) => {
                             const cells = row.cells.map((cell, index) => {

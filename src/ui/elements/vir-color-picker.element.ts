@@ -9,7 +9,7 @@ import {
     type ColorUpdate,
 } from '@electrovir/color';
 import {css, defineElement, defineElementEvent, html, listen} from 'element-vir';
-import {createTable, noNativeSpacing, ViraInput, ViraTable} from 'vira';
+import {defineTable, noNativeSpacing, ViraInput} from 'vira';
 import {VirCellPre} from './common/vir-cell-pre.element.js';
 import {VirColorSlider} from './vir-color-slider.element.js';
 import {VirColorSwatch} from './vir-color-swatch.element.js';
@@ -59,6 +59,16 @@ export const VirColorPicker = defineElement<{color: string}>()({
 
         h3 {
             ${noNativeSpacing};
+        }
+
+        td {
+            font-weight: bold;
+        }
+
+        th {
+            padding: 4px 8px;
+            font-weight: normal;
+            text-align: right;
         }
     `,
     events: {
@@ -127,6 +137,31 @@ export const VirColorPicker = defineElement<{color: string}>()({
             `;
         });
 
+        const {headerRow, rows} = defineTable(
+            [
+                {
+                    key: 'colorFormat',
+                    content: '',
+                },
+                {
+                    key: 'formattedString',
+                    content: '',
+                },
+            ],
+            getObjectTypedEntries(colorStrings),
+            ([
+                colorFormat,
+                value,
+            ]) => {
+                return {
+                    colorFormat: `${colorFormat}:`,
+                    formattedString: html`
+                        <${VirCellPre}>${value}</${VirCellPre}>
+                    `,
+                };
+            },
+        );
+
         return html`
             <section class="color-details">
                 <div class="swatch">
@@ -143,44 +178,32 @@ export const VirColorPicker = defineElement<{color: string}>()({
                         })}
                     ></${ViraInput}>
                 </div>
-                <${ViraTable.assign({
-                    stylePassthrough: {
-                        th: css`
-                            padding: 4px 8px;
-                            font-weight: normal;
-                            text-align: right;
-                        `,
-                        td: css`
-                            font-weight: bold;
-                        `,
-                    },
-                    table: createTable(
-                        [
-                            {
-                                key: 'colorFormat',
-                                isHeader: true,
-                            },
-                            {
-                                key: 'formattedString',
-                            },
-                        ],
-                        getObjectTypedEntries(colorStrings).map(
-                            ([
-                                colorFormat,
-                                value,
-                            ]) => {
-                                return {
-                                    cells: {
-                                        colorFormat: colorFormat + ':',
-                                        formattedString: html`
-                                            <${VirCellPre}>${value}</${VirCellPre}>
-                                        `,
-                                    },
-                                };
-                            },
-                        ),
-                    ),
-                })}></${ViraTable}>
+                <table>
+                    <thead>
+                        <tr>
+                            ${headerRow.map((header) => {
+                                return html`
+                                    <th>${header.content}</th>
+                                `;
+                            })}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows.map((row) => {
+                            const cells = row.cells.map((cell, index) => {
+                                const element = index ? 'td' : 'th';
+
+                                return html`
+                                    <${element}>${cell.content}</${element}>
+                                `;
+                            });
+
+                            return html`
+                                <tr>${cells}</tr>
+                            `;
+                        })}
+                    </tbody>
+                </table>
             </section>
             ${colorSpaceTemplates}
         `;

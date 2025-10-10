@@ -2,7 +2,7 @@ import {getObjectTypedEntries} from '@augment-vir/common';
 import {Color} from '@electrovir/color';
 import {css, defineElement, html, unsafeCSS} from 'element-vir';
 import {calculateContrast, ThemeVirContrastIndicator} from 'theme-vir';
-import {createTable, ViraTable} from 'vira';
+import {defineTable} from 'vira';
 import {VirCellPre} from './common/vir-cell-pre.element.js';
 import {VirColorSwatch} from './vir-color-swatch.element.js';
 
@@ -51,12 +51,52 @@ export const VirColorOverlay = defineElement<{
         ${ThemeVirContrastIndicator} {
             width: 100%;
         }
+
+        td {
+            padding: 4px 8px;
+            font-weight: bold;
+        }
+
+        th {
+            padding: 4px 8px;
+            text-align: end;
+            font-weight: normal;
+        }
     `,
     render({inputs}) {
         const contrast = calculateContrast({
             background: new Color(inputs.backgroundColor).toCss().rgb,
             foreground: new Color(inputs.foregroundColor).toCss().rgb,
         });
+
+        const {headerRow, rows} = defineTable(
+            [
+                {
+                    key: 'colorLayer',
+                    content: '',
+                },
+                {
+                    key: 'colorValue',
+                    content: '',
+                },
+            ],
+            getObjectTypedEntries({
+                'Foreground:': new Color(inputs.foregroundColor).toCss().hex,
+                'Background:': new Color(inputs.backgroundColor).toCss().hex,
+                'Contrast:': `${contrast.contrast} Lc`.padEnd(9, ' '),
+            }),
+            ([
+                colorLayer,
+                value,
+            ]) => {
+                return {
+                    colorLayer,
+                    colorValue: html`
+                        <${VirCellPre}>${value}</${VirCellPre}>
+                    `,
+                };
+            },
+        );
 
         return html`
             <${VirColorSwatch.assign({
@@ -84,49 +124,33 @@ export const VirColorOverlay = defineElement<{
                 </div>
             </${VirColorSwatch}>
             <div class="details">
-                <${ViraTable.assign({
-                    table: createTable(
-                        [
-                            {
-                                key: 'colorLayer',
-                                isHeader: true,
-                            },
-                            {
-                                key: 'colorValue',
-                            },
-                        ],
-                        getObjectTypedEntries({
-                            'Foreground:': new Color(inputs.foregroundColor).toCss().hex,
-                            'Background:': new Color(inputs.backgroundColor).toCss().hex,
-                            'Contrast:': `${contrast.contrast} Lc`.padEnd(9, ' '),
-                        }).map(
-                            ([
-                                colorLayer,
-                                value,
-                            ]) => {
-                                return {
-                                    cells: {
-                                        colorLayer,
-                                        colorValue: html`
-                                            <${VirCellPre}>${value}</${VirCellPre}>
-                                        `,
-                                    },
-                                };
-                            },
-                        ),
-                    ),
-                    stylePassthrough: {
-                        td: css`
-                            padding: 4px 8px;
-                            font-weight: bold;
-                        `,
-                        th: css`
-                            padding: 4px 8px;
-                            text-align: end;
-                            font-weight: normal;
-                        `,
-                    },
-                })}></${ViraTable}>
+                <table>
+                    <thead>
+                        <tr>
+                            ${headerRow.map((header) => {
+                                return html`
+                                    <th>${header.content}</th>
+                                `;
+                            })}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows.map((row) => {
+                            const cells = row.cells.map((cell, index) => {
+                                const element = index ? 'td' : 'th';
+
+                                return html`
+                                    <${element}>${cell.content}</${element}>
+                                `;
+                            });
+
+                            return html`
+                                <tr>${cells}</tr>
+                            `;
+                        })}
+                    </tbody>
+                </table>
+
                 <${ThemeVirContrastIndicator.assign({contrast})}></${ThemeVirContrastIndicator}>
             </div>
         `;

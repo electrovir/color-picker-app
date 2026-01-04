@@ -1,7 +1,6 @@
 import {round} from '@augment-vir/common';
-import {Color} from '@electrovir/color';
+import {calculateContrast, Color} from '@electrovir/color';
 import {css, defineElement, html, unsafeCSS} from 'element-vir';
-import {calculateContrast} from 'theme-vir';
 import {defineTable} from 'vira';
 import {monospaceFont} from '../styles/font.js';
 

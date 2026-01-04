@@ -1,7 +1,6 @@
 import {getObjectTypedEntries} from '@augment-vir/common';
-import {Color} from '@electrovir/color';
+import {calculateContrast, Color, fontWeightByName, VirContrastIndicator} from '@electrovir/color';
 import {css, defineElement, html, unsafeCSS} from 'element-vir';
-import {calculateContrast, ThemeVirContrastIndicator} from 'theme-vir';
 import {defineTable} from 'vira';
 import {VirCellPre} from './common/vir-cell-pre.element.js';
 import {VirColorSwatch} from './vir-color-swatch.element.js';
@@ -48,7 +47,7 @@ export const VirColorOverlay = defineElement<{
             width: 100%;
         }
 
-        ${ThemeVirContrastIndicator} {
+        ${VirContrastIndicator} {
             width: 100%;
         }
 
@@ -109,10 +108,13 @@ export const VirColorOverlay = defineElement<{
                     <div class="needed-size">
                         <span
                             style=${css`
-                                font-size: ${contrast.fontSizes[400]}px;
-                                line-height: ${contrast.fontSizes[400] * 0.77}px;
+                                font-size: ${contrast.fontSizes[fontWeightByName.Normal]}px;
+                                line-height: ${contrast.fontSizes[fontWeightByName.Normal] *
+                                0.77}px;
                                 visibility: ${unsafeCSS(
-                                    contrast.fontSizes[400] > 900 ? 'hidden' : 'visible',
+                                    contrast.fontSizes[fontWeightByName.Normal] > 900
+                                        ? 'hidden'
+                                        : 'visible',
                                 )};
                             `}
                         >
@@ -140,7 +142,10 @@ export const VirColorOverlay = defineElement<{
                     </tbody>
                 </table>
 
-                <${ThemeVirContrastIndicator.assign({contrast})}></${ThemeVirContrastIndicator}>
+                <${VirContrastIndicator.assign({
+                    contrast,
+                    fontWeight: fontWeightByName.Normal,
+                })}></${VirContrastIndicator}>
             </div>
         `;
     },

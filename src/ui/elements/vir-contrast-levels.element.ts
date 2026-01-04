@@ -1,7 +1,12 @@
 import {assertWrap} from '@augment-vir/assert';
-import {Color} from '@electrovir/color';
+import {
+    calculateContrast,
+    calculateFontSizes,
+    Color,
+    contrastLevelLabel,
+    contrastLevels,
+} from '@electrovir/color';
 import {classMap, css, defineElement, html} from 'element-vir';
-import {calculateContrast, calculateFontSizes, contrastLevelLabel, contrastLevels} from 'theme-vir';
 import {defineTable, ViraBoldText} from 'vira';
 
 export const VirContrastLevels = defineElement<{

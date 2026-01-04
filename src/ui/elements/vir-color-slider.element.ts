@@ -96,7 +96,7 @@ export const VirColorSlider = defineElement<{
                 `}
                 min=${coordinateDefinition.min}
                 max=${coordinateDefinition.max}
-                value=${coordinateValue}
+                .value=${String(coordinateValue)}
                 step=${Math.pow(10, coordinateDefinition.digits ? -coordinateDefinition.digits : 0)}
                 ${listen('input', (event) => {
                     const element = extractEventTarget(event, HTMLInputElement);

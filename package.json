@@ -35,11 +35,11 @@
         "@augment-vir/assert": "^31.57.3",
         "@augment-vir/common": "^31.57.3",
         "@augment-vir/web": "^31.57.3",
-        "@electrovir/color": "^1.0.0",
+        "@electrovir/color": "^1.4.0",
         "color-name": "^2.1.0",
         "element-vir": "^26.14.0",
         "type-fest": "^5.3.1",
-        "vira": "^28.15.0"
+        "vira": "^28.16.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.57.3",

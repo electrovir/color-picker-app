@@ -1,16 +1,15 @@
+import {VirAllSpacesColorPicker, VirColorPairContrastSummary} from '@electrovir/color';
 import {css, defineElement, html, listen} from 'element-vir';
+import {viraFontCssVars} from 'vira';
 import {ColorPickerLayer, loadColorFromCache, storeColorInCache} from '../../data/cache-store.js';
 import {verifyColor} from '../../data/verify-color.js';
 import {bodyFont} from '../styles/font.js';
-import {VirColorOverlay} from './vir-color-overlay.element.js';
-import {VirColorPicker} from './vir-color-picker.element.js';
-import {VirContrastLevels} from './vir-contrast-levels.element.js';
-import {VirTextWeights} from './vir-text-weights.element.js';
 
 export const VirApp = defineElement()({
     tagName: 'vir-app',
     styles: css`
         :host {
+            ${viraFontCssVars['vira-monospace'].name}: 'Inconsolata', monospace;
             font-family: ${bodyFont};
             display: flex;
             justify-content: center;
@@ -51,26 +50,18 @@ export const VirApp = defineElement()({
         return html`
             <main>
                 <section class="overlay">
-                    <${VirColorOverlay.assign({
+                    <${VirColorPairContrastSummary.assign({
                         foregroundColor: state.foregroundColor,
                         backgroundColor: state.backgroundColor,
-                    })}></${VirColorOverlay}>
-                    <${VirTextWeights.assign({
-                        foregroundColor: state.foregroundColor,
-                        backgroundColor: state.backgroundColor,
-                    })}></${VirTextWeights}>
-                    <${VirContrastLevels.assign({
-                        foregroundColor: state.foregroundColor,
-                        backgroundColor: state.backgroundColor,
-                    })}></${VirContrastLevels}>
+                    })}></${VirColorPairContrastSummary}>
                 </section>
                 <section class="picker">
                     <div>
                         <h2>Foreground</h2>
-                        <${VirColorPicker.assign({
+                        <${VirAllSpacesColorPicker.assign({
                             color: state.foregroundColor,
                         })}
-                            ${listen(VirColorPicker.events.colorChange, (event) => {
+                            ${listen(VirAllSpacesColorPicker.events.colorChange, (event) => {
                                 const newColor = verifyColor(event.detail);
                                 if (newColor) {
                                     storeColorInCache(ColorPickerLayer.Foreground, newColor);
@@ -79,14 +70,14 @@ export const VirApp = defineElement()({
                                     });
                                 }
                             })}
-                        ></${VirColorPicker}>
+                        ></${VirAllSpacesColorPicker}>
                     </div>
                     <div>
                         <h2>Background</h2>
-                        <${VirColorPicker.assign({
+                        <${VirAllSpacesColorPicker.assign({
                             color: state.backgroundColor,
                         })}
-                            ${listen(VirColorPicker.events.colorChange, (event) => {
+                            ${listen(VirAllSpacesColorPicker.events.colorChange, (event) => {
                                 const newColor = verifyColor(event.detail);
                                 if (newColor) {
                                     storeColorInCache(ColorPickerLayer.Background, newColor);
@@ -95,7 +86,7 @@ export const VirApp = defineElement()({
                                     });
                                 }
                             })}
-                        ></${VirColorPicker}>
+                        ></${VirAllSpacesColorPicker}>
                     </div>
                 </section>
             </main>
